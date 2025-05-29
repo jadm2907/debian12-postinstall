@@ -27,7 +27,7 @@ Terminal Bash.
 
 Uso
 
-Descarga el script:wget https://raw.githubusercontent.com/jadm2907/debian12-postinstall/main/debian12_postinstalacion.sh
+Descarga el script:wget https://github.com/jadm2907/debian12-postinstall.git 
 
 
 Hazlo ejecutable:chmod +x debian12_postinstalacion.sh
