@@ -83,9 +83,12 @@ show_menu() {
 
 # Función para ejecutar todas las tareas
 run_all_tasks() {
+    print_progress "Iniciando la ejecución de todas las tareas de instalación..."
     for i in {1..26}; do
-        run_task "$i" "install"
+        print_progress "Ejecutando tarea $i..."
+        run_task "$i" "install" || print_error "Error al ejecutar la tarea $i, continuando con la siguiente."
     done
+    print_progress "Todas las tareas de instalación han sido procesadas."
 }
 
 # Función para ejecutar/desinstalar tareas individuales
@@ -421,22 +424,155 @@ if [ -n "$force_color_prompt" ]; then
         # We have color support; assume it's compliant with Ecma-48
         # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
         # a case would tend to support setf rather than setaf.)
-        color_print_progress "Ejecutando todas las tareas de instalación..."
-        run_all_tasks
-    elif [ "$choice" -eq 28 ]; then
-        echo -n "Ingresa el número de la tarea a desinstalar [1-26]: "
-        read uninstall_choice
-        if [[ "$uninstall_choice" =~ ^[0-9]+$ && "$uninstall_choice" -ge 1 && "$uninstall_choice" -le 26 ]]; then
-            run_task "$uninstall_choice" "uninstall"
-        else
-            print_error "Opción inválida."
-        fi
-    elif [ "$choice" -eq 29 ]; then
-        print_progress "Saliendo del script."
-        exit 0
+        color_prompt=yes
     else
-        print_error "Opción inválida."
+        color_prompt=
     fi
+fi
+
+# The following block is surrounded by two delimiters.
+# These delimiters must not be modified. Thanks.
+# START KALI CONFIG VARIABLES
+PROMPT_ALTERNATIVE=twoline
+NEWLINE_BEFORE_PROMPT=yes
+# STOP KALI CONFIG VARIABLES
+
+if [ "$color_prompt" = yes ]; then
+    # override default virtualenv indicator in prompt
+    VIRTUAL_ENV_DISABLE_PROMPT=1
+
+    prompt_color='\[\033[;32m\]'
+    info_color='\[\033[1;34m\]'
+    prompt_symbol=㉿
+    if [ "$EUID" -eq 0 ]; then # Change prompt colors for root user
+        prompt_color='\[\033[;94m\]'
+        info_color='\[\033[1;31m\]'
+        # Skull emoji for root terminal
+        #prompt_symbol=💀
+    fi
+    case "$PROMPT_ALTERNATIVE" in
+        twoline)
+            PS1=$prompt_color'┌──${debian_chroot:+($debian_chroot)──}${VIRTUAL_ENV:+(\[\033[0;1m\]$(basename $VIRTUAL_ENV)'$prompt_color')}('$info_color'\u'$prompt_symbol'\h'$prompt_color')-[\[\033[0;1m\]\w'$prompt_color']\n'$prompt_color'└─'$info_color'\$\[\033[0m\] ';;
+        oneline)
+            PS1='${VIRTUAL_ENV:+($(basename $VIRTUAL_ENV)) }${debian_chroot:+($debian_chroot)}'$info_color'\u@\h\[\033[00m\]:'$prompt_color'\[\033[01m\]\w\[\033[00m\]\$ ';;
+        backtrack)
+            PS1='${VIRTUAL_ENV:+($(basename $VIRTUAL_ENV)) }${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ ';;
+    esac
+    unset prompt_color
+    unset info_color
+    unset prompt_symbol
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*|Eterm|aterm|kterm|gnome*|alacritty)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+[ "$NEWLINE_BEFORE_PROMPT" = yes ] && PROMPT_COMMAND="PROMPT_COMMAND=echo"
+
+# enable color support of ls, less and man, and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    export LS_COLORS="$LS_COLORS:ow=30;44:" # fix ls color for folders with 777 permissions
+
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias diff='diff --color=auto'
+    alias ip='ip --color=auto'
+
+    export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
+    export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
+    export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+    export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
+    export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+    export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+    export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+fi
+
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+EOF
+            else
+                print_progress "Restaurando .bashrc..."
+                if [ -f ~/.bashrc.bak ]; then
+                    mv ~/.bashrc.bak ~/.bashrc
+                else
+                    print_progress "No se encontró respaldo de .bashrc."
+                fi
+            fi
+            ;;
+    esac
+}
+
+# Bucle principal del menú
+while true; do
+    show_menu
+    read -r choice
+    case $choice in
+        1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26)
+            run_task "$choice" "install"
+            ;;
+        27)
+            run_all_tasks
+            ;;
+        28)
+            echo -n "Ingresa el número de la tarea a desinstalar [1-26]: "
+            read -r uninstall_choice
+            if [[ "$uninstall_choice" =~ ^[0-9]+$ ]] && [ "$uninstall_choice" -ge 1 ] && [ "$uninstall_choice" -le 26 ]; then
+                run_task "$uninstall_choice" "uninstall"
+            else
+                print_error "Opción inválida para desinstalación."
+            fi
+            ;;
+        29)
+            print_progress "Saliendo del script."
+            exit 0
+            ;;
+        *)
+            print_error "Por favor, ingresa un número entre 1 y 29."
+            ;;
+    esac
     echo -n "Presiona Enter para continuar..."
-    read
+    read -r
 done
