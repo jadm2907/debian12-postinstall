@@ -1,300 +1,158 @@
-Script de Post-Instalación para Debian 12 con GNOME
+🛠️ Script de Post-Instalación para Debian 12 con GNOME
+Este script en Bash automatiza tareas de configuración y optimización para Debian 12 con entorno GNOME. Proporciona un menú interactivo que permite ejecutar tareas específicas o todo el conjunto, con validaciones para evitar instalaciones redundantes.
 
-Este script de Bash automatiza tareas de configuración y optimización para Debian 12 con el entorno de escritorio GNOME. Incluye un menú interactivo que permite ejecutar tareas de instalación o desinstalación de forma individual o todas a la vez, con validaciones para evitar instalaciones redundantes.
+✨ Características
+🎛️ Menú interactivo: Ejecuta tareas individualmente o todas a la vez.
 
-Características
+✅ Validaciones inteligentes: Detecta si los paquetes ya están instalados.
 
+🌈 Mensajes en español: Instrucciones claras con retroalimentación en colores.
 
+🔄 Instalación y desinstalación: Opciones para revertir los cambios donde sea posible.
 
+🧱 Manejo de errores: Continuación en errores no críticos con mensajes explicativos.
 
+📦 Tareas que realiza
+🔄 Actualización del sistema y limpieza de paquetes no utilizados
 
-Menú interactivo: Selecciona tareas específicas para instalar o desinstalar.
+📦 Habilitación de repositorios contrib y non-free
 
+🌐 Instalación de 10 navegadores web:
 
+Firefox ESR, Chromium, Google Chrome, Mullvad, Epiphany, Midori, Falkon, Qutebrowser, Surf, Lynx
 
-Validaciones: Comprueba si los paquetes ya están instalados antes de proceder.
+(Tor Browser requiere instalación manual)
 
+🧩 Configuración de extensiones GNOME (Dash to Dock, GNOME Shell Extensions)
 
+🛠️ Instalación de herramientas: VLC, LibreOffice, GIMP, Flatpak, fuentes Microsoft
 
-Mensajes en español: Instrucciones claras con retroalimentación de progreso en colores.
+🔐 Configuración de seguridad: UFW, SSH, OpenVPN
 
+🖥️ Personalización de .bashrc
 
+🧹 Desinstalación y restauración de cambios
 
-Tareas incluidas:
+🧾 Requisitos
+✅ Debian 12 con GNOME
 
+🔐 Privilegios de sudo
 
+🌐 Conexión a Internet
 
+💻 Terminal Bash
 
-
-Actualización del sistema y limpieza de paquetes no utilizados.
-
-
-
-Habilitación de repositorios contrib y non-free.
-
-
-
-Instalación de 10 navegadores web (Firefox ESR, Chromium, Google Chrome, Mullvad, Epiphany, Midori, Falkon, Qutebrowser, Surf, Lynx; Tor Browser requiere instalación manual).
-
-
-
-Configuración de extensiones de GNOME (Dash to Dock, GNOME Shell Extensions).
-
-
-
-Instalación de herramientas como VLC, LibreOffice, GIMP, Flatpak, y fuentes Microsoft.
-
-
-
-Configuración de seguridad (cortafuegos UFW, SSH, OpenVPN).
-
-
-
-Actualización de .bashrc para personalizar la terminal.
-
-
-
-Desinstalación: Revierte cambios (donde sea posible) como eliminación de paquetes o restauración de configuraciones.
-
-
-
-Manejo de errores: Mensajes claros para fallos y posibilidad de continuar tras errores no críticos.
-
-Requisitos
-
-
-
-
-
-Debian 12 con entorno GNOME instalado.
-
-
-
-Privilegios de sudo.
-
-
-
-Conexión a internet.
-
-
-
-Terminal Bash.
-
-Instalación
-
-
-
-
-
-Clona el repositorio o descarga el script:
-
+🚀 Instalación
+bash
+Copy
+Edit
 git clone https://github.com/jadm2907/debian12-postinstall.git
 cd debian12-postinstall
+O descarga directa:
 
-O:
-
+bash
+Copy
+Edit
 wget https://github.com/jadm2907/debian12-postinstall.git
-
-
-
 Haz el script ejecutable:
 
+bash
+Copy
+Edit
 chmod +x debian12_postinstalacion.sh
+Ejecuta con sudo:
 
-
-
-Ejecuta el script con sudo:
-
+bash
+Copy
+Edit
 sudo ./debian12_postinstalacion.sh
+🧭 Uso
+Al ejecutar el script, verás un menú interactivo con 29 opciones:
 
-Uso
+1-26: Ejecutan tareas individuales (actualización, instalación, configuración)
 
+27: Ejecuta todas las tareas de instalación
 
+28: Opción de desinstalación individual
 
+29: Salir del script
 
+🔔 Algunas tareas como habilitar Luz Nocturna requieren pasos manuales (con instrucciones en pantalla).
 
-Al ejecutar el script, se muestra un menú interactivo con 29 opciones:
+📋 Lista de Tareas Incluidas
+✅ apt update && apt full-upgrade
 
+📦 Habilitar contrib y non-free
 
+🔧 Actualizar firmware
 
+🛠️ Instalar GNOME Tweaks
 
+🧩 GNOME Shell Extensions + Dash to Dock
 
-1-26: Ejecuta tareas individuales de instalación (actualización del sistema, instalación de navegadores, etc.).
+🌅 Luz Nocturna (manual)
 
+🎞️ Códecs multimedia
 
+🌐 Navegadores web
 
-27: Ejecuta todas las tareas de instalación.
+🔥 Cortafuegos (UFW)
 
+🧰 Synaptic, Déjà Dup
 
+🔋 Ajustes de energía (manual)
 
-28: Desinstala una tarea específica.
+💾 Controladores propietarios (manual)
 
+☁️ Sincronización de archivos (manual)
 
+🖥️ LibreOffice, GIMP
 
-29: Sale del script.
+🔐 SSH y OpenVPN
 
+🎨 Temas GNOME (manual)
 
+🧹 Limpieza del sistema
 
-Sigue las instrucciones en pantalla para tareas manuales (e.g., habilitar Luz Nocturna).
+📊 htop, system-monitor
 
-Tareas Incluidas
+📦 unrar, p7zip-full
 
+🎥 VLC
 
+🧩 Flatpak y Spotify
 
+🅰️ Fuentes Microsoft
 
+🖊️ Personalización de .bashrc
 
-Actualizar el sistema (apt update && apt full-upgrade).
+📝 Notas
+⚠️ Algunas tareas (Luz Nocturna, controladores, etc.) requieren intervención manual.
 
+🧠 Tor Browser debe instalarse desde torproject.org
 
+🔄 El enlace de Mullvad puede cambiar: revisa mullvad.net
 
-Habilitar repositorios contrib y non-free.
+🗂️ Se crean respaldos automáticos de:
 
+/etc/apt/sources.list
 
+~/.bashrc
 
-Instalar actualizaciones de firmware.
+🛑 Usa con precaución, especialmente en sistemas críticos.
 
+🤝 Contribuir
+¡Las contribuciones son bienvenidas!
 
+🐛 Reporta problemas en la sección Issues
 
-Instalar GNOME Tweaks.
+📥 Envía Pull Requests con mejoras o correcciones
 
+🧑‍💻 Sigue las convenciones de código del proyecto
 
+📄 Licencia
+Distribuido bajo la Licencia MIT.
 
-Instalar extensiones de GNOME Shell.
+👤 Autor
+@jadm2907
 
-
-
-Instalar Dash to Dock.
-
-
-
-Habilitar Luz Nocturna (manual).
-
-
-
-Instalar códecs multimedia.
-
-
-
-Instalar navegadores web (Firefox ESR, Chromium, Google Chrome, Mullvad, etc.).
-
-
-
-Configurar cortafuegos (UFW).
-
-
-
-Instalar Synaptic Package Manager.
-
-
-
-Instalar herramienta de respaldo (Déjà Dup).
-
-
-
-Optimizar ajustes de energía (manual).
-
-
-
-Instalar controladores propietarios (manual).
-
-
-
-Configurar sincronización de archivos (manual).
-
-
-
-Instalar software de productividad (LibreOffice, GIMP).
-
-
-
-Configurar SSH.
-
-
-
-Configurar VPN (OpenVPN).
-
-
-
-Personalizar tema de GNOME (manual).
-
-
-
-Limpiar paquetes no utilizados.
-
-
-
-Instalar herramientas de monitoreo (htop, gnome-system-monitor).
-
-
-
-Instalar herramientas de compresión (unrar, p7zip-full).
-
-
-
-Instalar VLC.
-
-
-
-Habilitar Flatpak y Spotify.
-
-
-
-Instalar fuentes Microsoft.
-
-
-
-Actualizar .bashrc.
-
-Notas
-
-
-
-
-
-Algunas tareas (e.g., Luz Nocturna, ajustes de energía, controladores propietarios) requieren configuración manual; el script proporciona instrucciones.
-
-
-
-El navegador Tor debe instalarse manualmente desde https://www.torproject.org/download/.
-
-
-
-El URL de Mullvad Browser (versión 12.5.7) puede cambiar; verifica en https://mullvad.net/en/download/browser si falla.
-
-
-
-Se crean respaldos automáticos de /etc/apt/sources.list y ~/.bashrc antes de modificarlos.
-
-
-
-Usa el script con precaución, especialmente en sistemas críticos, y revisa los cambios propuestos.
-
-Contribuir
-
-¡Las contribuciones son bienvenidas! Por favor:
-
-
-
-
-
-Reporta problemas en la sección de Issues.
-
-
-
-Envía pull requests con mejoras o correcciones.
-
-
-
-Sigue las convenciones de código del proyecto.
-
-Licencia
-
-Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
-
-Autor
-
-
-
-
-
-jadm2907 - GitHub
